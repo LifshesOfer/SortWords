@@ -17,11 +17,16 @@ namespace SortWords.Core
                 ascending = GetSortOption();
             }
 
-            var outputFile = args.Length > 2 ? args[2] : "";
-            if (!FileProcessor.ValidateFilePath(outputFile, FileMode.Create, FileAccess.Write))
+            string outputFile;
+            if(args.Length > 2 && FileProcessor.ValidateFilePath(args[2], FileMode.Create, FileAccess.Write))
+            {
+                outputFile = args[2];
+            }
+            else
             {
                 outputFile = GetOutputFilePath();
             }
+            
             
 
             return new(inputFile, outputFile, ascending);
@@ -33,10 +38,9 @@ namespace SortWords.Core
             Console.WriteLine("Enter your options:");
             var inputLine = Console.ReadLine();
             bool ascending;
-            if(!TryConvertSortOption(inputLine, out ascending))
+            while(!TryConvertSortOption(inputLine, out ascending))
             {
                 Console.WriteLine("Sorting option not supported. Supported options are: 'sort a' and 'sort d'");
-                ascending = GetSortOption();
             }
             
             return ascending;
@@ -93,6 +97,10 @@ namespace SortWords.Core
             {
                 Console.WriteLine("Please enter output file path");
                 filePath = Console.ReadLine();
+                if(filePath != null)
+                {
+                    filePath = Path.GetFullPath(filePath);
+                }
 
             } while (!FileProcessor.ValidateFilePath(filePath, FileMode.Create, FileAccess.ReadWrite));
 
