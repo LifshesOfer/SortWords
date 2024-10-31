@@ -2,7 +2,7 @@
 
 namespace SortWords.Core
 {
-    public class WordProcessor
+    public class WordProcessor : IEquatable<WordProcessor>
     {
         private readonly Dictionary<string, int> WordFrequency = [];
         private KeyValuePair<string, int> MostFrequentWord = new();
@@ -73,6 +73,14 @@ namespace SortWords.Core
             mostFrequent.Frequency = maxFrequency;
             return mostFrequent;
             
+        }
+
+        public bool Equals(WordProcessor? other)
+        {
+            return other != null &&
+                Enumerable.SequenceEqual(this.WordFrequency, other.WordFrequency) 
+                && other.MostFrequentWord.Key == this.MostFrequentWord.Key
+                && other.MostFrequentWord.Value == this.MostFrequentWord.Value;
         }
     }
 }

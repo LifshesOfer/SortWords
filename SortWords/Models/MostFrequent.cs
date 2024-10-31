@@ -18,9 +18,9 @@
 
         public bool Equals(MostFrequent? other)
         {
-            return (other != null &&
+            return other != null &&
                 Enumerable.SequenceEqual(this.Words, other.Words) &&
-                other.Frequency == this.Frequency);
+                other.Frequency == this.Frequency;
         }
     }
 }
