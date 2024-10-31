@@ -57,12 +57,6 @@
 
             return wordProcessor;
         }
-        static async IAsyncEnumerable<string> ReadLines(string path)
-        {
-            using StreamReader reader = File.OpenText(path);
-            while (!reader.EndOfStream)
-                yield return await reader.ReadLineAsync();
-        }
 
         public static async Task<string> WriteFile(string filePath, string fileContent)
         {
