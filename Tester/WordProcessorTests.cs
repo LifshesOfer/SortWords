@@ -1,6 +1,5 @@
 ﻿using SortWords.Core;
 using SortWords.Core.Models;
-using SortWords.Tests.TestData;
 
 namespace SortWords.Tests
 {
@@ -24,7 +23,7 @@ namespace SortWords.Tests
             var processor = new WordProcessor();
             
             processor.ProcessLine(line);
-
+            var uniqueWords = processor.GetUniqueWords();
             Assert.That(processor.GetUniqueWords(), Has.Count.EqualTo(1));
         }
 

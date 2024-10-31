@@ -12,7 +12,9 @@ namespace SortWords.Tests
         }
 
         private static readonly object[] TestData = [
-            new object[] { "C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\InMyLife.txt", "all, and, are, better, can, changed, dead, for, forever, friends, gone, have, i, in, life, living, loved, lovers, moments, my, not, places, recall, remain, remember, some, still, their, them, there, these, though, will, with", new MostFrequent(["some"], 6)}
+            new object[] { "C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\InMyLife.txt", "all, and, are, better, can, changed, dead, for, forever, friends, gone, have, i, in, life, living, loved, lovers, moments, my, not, places, recall, remain, remember, some, still, their, them, there, these, though, will, with", new MostFrequent(["some"], 6)},
+            new object[] { "C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\TiedWords.txt", "an, ana, ban, banana, test", new MostFrequent(["banana", "test"], 3)},
+            new object[] { "C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\DoesNotExist.txt", "", new MostFrequent()},
             ];
 
         [TestCaseSource(nameof(TestData))]
