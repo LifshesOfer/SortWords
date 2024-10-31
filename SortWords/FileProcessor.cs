@@ -1,4 +1,6 @@
-﻿namespace SortWords
+﻿using System.Text.RegularExpressions;
+
+namespace SortWords
 {
     internal class FileProcessor
     {
@@ -28,6 +30,23 @@
                 return false;
             }
             return true;
+        }
+
+        public static async Task<WordProcessor> ProcessFile(string filePath)
+        {
+            var wordProcessor = new WordProcessor();
+            var asyncLines = File.ReadLinesAsync(filePath);
+            await foreach(var asyncLine in asyncLines)
+            {
+                if (string.IsNullOrEmpty(asyncLine))
+                {
+                    continue;
+                }
+                wordProcessor.ProcessLine(asyncLine);
+            }
+
+            return wordProcessor;
+
         }
     }
 }
