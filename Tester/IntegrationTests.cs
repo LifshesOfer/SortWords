@@ -1,4 +1,5 @@
 using SortWords.Core;
+using SortWords.Core.Extensions;
 using SortWords.Core.Models;
 
 namespace SortWords.Tests
@@ -31,6 +32,19 @@ namespace SortWords.Tests
                 Assert.That(mostFrequent, Is.EqualTo(expectedFrequent));
                 Assert.That(sortedWords, Is.EqualTo(expectedString));
             });
+        }
+
+        [Test]
+        public async Task Test_Configuration_AscendingSort()
+        {
+            var outputPath = "output.txt";
+            
+            var config = ConfigurationFactory.CreateConfiguration(["C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\InMyLife.txt", "sort a", outputPath]);
+            await config.Run();
+
+            var actual = File.ReadAllText(outputPath);
+            var expected = File.ReadAllText("C:\\Users\\Ofer\\source\\repos\\SortWords\\Tester\\TestData\\InMyLifeExpected.txt");
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }
