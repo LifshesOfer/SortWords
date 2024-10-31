@@ -1,8 +1,6 @@
-﻿using System.Text.RegularExpressions;
-
-namespace SortWords
+﻿namespace SortWords.Core
 {
-    internal class FileProcessor
+    public class FileProcessor
     {
         /// <summary>
         /// Validates a file path by checking if it is non-empty and accessible with the specified mode and access.
@@ -15,10 +13,10 @@ namespace SortWords
         /// </returns>
         public static bool ValidateFilePath(string? filePath, FileMode fileMode, FileAccess fileAccess)
         {
-            if(string.IsNullOrEmpty(filePath)) 
+            if (string.IsNullOrEmpty(filePath))
             {
                 Console.WriteLine("File path empty");
-                return false; 
+                return false;
             }
             try
             {
@@ -35,8 +33,13 @@ namespace SortWords
         public static async Task<WordProcessor> ProcessFile(string filePath)
         {
             var wordProcessor = new WordProcessor();
+
+            if (!ValidateFilePath(filePath, FileMode.Open, FileAccess.Read))
+            {
+                return wordProcessor;
+            }
             var asyncLines = File.ReadLinesAsync(filePath);
-            await foreach(var asyncLine in asyncLines)
+            await foreach (var asyncLine in asyncLines)
             {
                 if (string.IsNullOrEmpty(asyncLine))
                 {
@@ -46,7 +49,17 @@ namespace SortWords
             }
 
             return wordProcessor;
+        }
 
+        public static async Task<string> WriteFile(string filePath, string fileContent)
+        {
+            if(!ValidateFilePath(filePath, FileMode.Create, FileAccess.Write))
+            {
+                return string.Empty;
+            }
+
+            await File.WriteAllTextAsync(filePath, fileContent);
+            return filePath;
         }
     }
 }

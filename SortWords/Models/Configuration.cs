@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SortWords.Models
+﻿namespace SortWords.Core.Models
 {
     public class Configuration(string InputFile, string OutputFile, bool Ascending)
     {
-
+        public string InputFile { get; } = InputFile;
+        public string OutputFile { get; } = OutputFile;
+        public bool Ascending { get; } = Ascending;
     }
 }

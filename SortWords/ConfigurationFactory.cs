@@ -1,6 +1,6 @@
-﻿using SortWords.Models;
+﻿using SortWords.Core.Models;
 
-namespace SortWords
+namespace SortWords.Core
 {
     internal class ConfigurationFactory
     {
