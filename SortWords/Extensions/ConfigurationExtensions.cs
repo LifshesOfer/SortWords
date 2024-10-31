@@ -8,12 +8,26 @@ namespace SortWords.Core.Extensions
         {
             var wordProcessor = await FileProcessor.ProcessFile(configuration.InputFile);
             var uniqueWords = wordProcessor.GetUniqueWords();
-            var sortedWords = uniqueWords.Sort(configuration.Ascending);
 
-            await FileProcessor.WriteFile(configuration.OutputFile, sortedWords);
-            var mostFrequest = wordProcessor.GetMostFrequentWord();
+            if (uniqueWords.Count == 0)
+            {
+                Console.WriteLine($"The file {configuration.InputFile} is empty - no file was created");
+                return;
+            }
+
+            var sortedWords = uniqueWords.SortBy(configuration.Ascending);
+
+            await FileProcessor.WriteFile(configuration.OutputFile, string.Join(", ", [.. sortedWords]));
+            var mostFrequent = wordProcessor.GetMostFrequent();
             Console.WriteLine($"F2 content:\n{sortedWords}");
-            Console.WriteLine($"The most frequent word in the text is '{mostFrequest.Key}', count: {mostFrequest.Value}");
+            if(mostFrequent.Words.Length > 1)
+            {
+                Console.WriteLine($"The most frequent words in the text are:\n '{string.Join("', '", mostFrequent.Words)}'.\n count: {mostFrequent.Frequency}");
+            }
+            else
+            {
+                Console.WriteLine($"The most frequent word in the text is {mostFrequent.Words[0]}.\n count: {mostFrequent.Frequency}");
+            }
         }
     }
 }
