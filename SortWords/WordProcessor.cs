@@ -5,6 +5,7 @@ namespace SortWords.Core
     public class WordProcessor : IEquatable<WordProcessor>
     {
         private readonly Dictionary<string, int> WordFrequency = [];
+        private readonly HashSet<string> UniqueWords = [];
         private KeyValuePair<string, int> MostFrequentWord = new();
 
         private static string[] GetLowercaseWords(string line)
@@ -40,9 +41,12 @@ namespace SortWords.Core
 
         private void ProcessWord(string word)
         {
-            var hasKey = WordFrequency.TryGetValue(word, out int value);
-            value = hasKey ? ++value : 1;
-            WordFrequency[word] = value;
+            var newWord = UniqueWords.Add(word);
+            if (newWord)
+            {
+                WordFrequency[word] = 1;
+            }
+            var value = newWord ? 1 : ++WordFrequency[word];
 
             if (value > MostFrequentWord.Value)
             {
@@ -57,7 +61,7 @@ namespace SortWords.Core
 
         public List<string> GetUniqueWords()
         {
-            return [.. WordFrequency.Keys];
+            return [.. UniqueWords];
         }
 
         public MostFrequent GetMostFrequent()
@@ -81,6 +85,13 @@ namespace SortWords.Core
                 Enumerable.SequenceEqual(this.WordFrequency, other.WordFrequency) 
                 && other.MostFrequentWord.Key == this.MostFrequentWord.Key
                 && other.MostFrequentWord.Value == this.MostFrequentWord.Value;
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as WordProcessor);
+
+        public override int GetHashCode()
+        {
+            return WordFrequency.GetHashCode() ^ UniqueWords.GetHashCode() ^ MostFrequentWord.GetHashCode();
         }
     }
 }
