@@ -41,14 +41,27 @@
             var asyncLines = File.ReadLinesAsync(filePath);
             await foreach (var asyncLine in asyncLines)
             {
-                if (string.IsNullOrEmpty(asyncLine))
+                try
                 {
-                    continue;
+                    if (string.IsNullOrEmpty(asyncLine))
+                    {
+                        continue;
+                    }
+                    wordProcessor.ProcessLine(asyncLine);
                 }
-                wordProcessor.ProcessLine(asyncLine);
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while reading line from file: {ex.Message}");
+                }
             }
 
             return wordProcessor;
+        }
+        static async IAsyncEnumerable<string> ReadLines(string path)
+        {
+            using StreamReader reader = File.OpenText(path);
+            while (!reader.EndOfStream)
+                yield return await reader.ReadLineAsync();
         }
 
         public static async Task<string> WriteFile(string filePath, string fileContent)
