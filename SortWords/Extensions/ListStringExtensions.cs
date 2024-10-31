@@ -1,21 +1,23 @@
 ﻿namespace SortWords.Core.Extensions
 {
-    internal static class ListStringExtensions
+    public static class ListStringExtensions
     {
-        public static string Sort(this List<string> list, bool ascending)
+        public static List<string> SortBy(this List<string> list, bool ascending)
         {
             if (list == null) 
-                return string.Empty;
+                return [];
+
+            var sortedList = new List<string>(list);
             if (ascending)
             {
-                list.Sort((a,b) => a.CompareTo(b));
+                sortedList.Sort((a,b) => a.CompareTo(b));
             }
             else
             {
-                list.Sort((a, b) => b.CompareTo(a));
+                sortedList.Sort((a, b) => b.CompareTo(a));
             }
 
-            return string.Join(", ", [.. list]);
+            return sortedList;
         }
     }
 }
